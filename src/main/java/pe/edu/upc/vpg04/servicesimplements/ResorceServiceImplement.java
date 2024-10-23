@@ -26,6 +26,21 @@ public class ResorceServiceImplement implements IResourceService {
     }
 
     @Override
+    public void update(Resource resour) {
+        rR.save(resour);
+    }
+
+    @Override
+    public Resource listId(int id) {
+        return rR.findById(id).orElse(new Resource());
+    }
+
+    @Override
+    public void delete(int id) {
+        rR.deleteById(id);
+    }
+
+    @Override
     public List<String[]> Rmenosutilizado() {
         return rR.Rmenosutilizado();
     }
