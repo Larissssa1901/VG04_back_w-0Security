@@ -2,6 +2,7 @@ package pe.edu.upc.vpg04.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.vpg04.dtos.ForumDTO;
 import pe.edu.upc.vpg04.dtos.LessUsedResourceDTO;
@@ -24,7 +25,7 @@ public class ResourceController {
     private IResourceService rS;
 
     @GetMapping
-   // @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+   @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
     public List<Resource> listarecursos()
     {
         return rS.list().stream().map(x->{
@@ -34,7 +35,7 @@ public class ResourceController {
     }
 
     @PostMapping
-    //@PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
     public void insertar(@RequestBody ResourceDTO dto)
     {
         ModelMapper m=new ModelMapper();
@@ -50,7 +51,7 @@ public class ResourceController {
     }
 
     @DeleteMapping("/eliminar/{id}")
-    //@PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
     public void eliminar(@PathVariable("id") Integer id) {
         rS.delete(id);
     }
@@ -63,7 +64,7 @@ public class ResourceController {
         return resourceDTO;
     }
     @GetMapping("/menosutilizado")
-    //@PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
     public List<LessUsedResourceDTO> Recursomenosutilizado()
     {
         List<String[]> lista=rS.Rmenosutilizado();
@@ -78,7 +79,7 @@ public class ResourceController {
         return listdto;
     }
     @GetMapping("/maasutilizadoportiempo")
-    //@PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
     public List<MostUsebetweendateDTO> recursomasutilizadoportiempo(@RequestParam LocalDate fechainicio, @RequestParam LocalDate fechafin) {
         List<String[]> lista = rS.tiporecursomasutilizad(fechainicio, fechafin);
         List<MostUsebetweendateDTO> listadto = new ArrayList<>();

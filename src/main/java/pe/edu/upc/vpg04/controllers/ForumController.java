@@ -2,6 +2,7 @@ package pe.edu.upc.vpg04.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.vpg04.dtos.ForumDTO;
 import pe.edu.upc.vpg04.dtos.MostActiveForumInatMonthDTO;
@@ -17,24 +18,24 @@ import java.util.stream.Collectors;
 public class ForumController {
     @Autowired
     private IForumService fS;
-    @PostMapping("/registrar")
-    //@PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PostMapping
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
     public void registrar(@RequestBody ForumDTO forumDTO) {
         ModelMapper m = new ModelMapper();
         Forum forum = m.map(forumDTO, Forum.class);
         fS.insert(forum);
     }
 
-    @PutMapping("/actualizar")
-    //@PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PutMapping
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
     public void modificar(@RequestBody ForumDTO forumDTO) {
         ModelMapper m = new ModelMapper();
         Forum forum = m.map(forumDTO, Forum.class);
         fS.update(forum);
     }
 
-    @GetMapping("/listar")
-    //@PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @GetMapping
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO','VETERANO')")
     public List<ForumDTO> listar() {
         return fS.list().stream().map(y -> {
             ModelMapper m = new ModelMapper();
@@ -42,21 +43,21 @@ public class ForumController {
         }).collect(Collectors.toList());
     }
 
-    @DeleteMapping("/eliminar/{id}")
-    //@PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @DeleteMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
     public void eliminar(@PathVariable("id") Integer id) {
         fS.delete(id);
     }
 
-    @GetMapping("/listar/{id}")
-    //@PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @GetMapping("listar/{id}")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
     public ForumDTO listarPorId(@PathVariable("id") Integer id) {
         ModelMapper m = new ModelMapper();
         ForumDTO forumDTO = m.map(fS.listId(id), ForumDTO.class);
         return forumDTO;
     }
     @GetMapping("/quantity(MostActiveForums)")
-    //@PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
     public List<MostActiveForumInatMonthDTO> mostActiveForumsInTheLastMonths(){
         List<String[]> list = fS.ForosMasActivosEnElEltimoMes();
         List<MostActiveForumInatMonthDTO> listdto = new ArrayList<>();
@@ -70,7 +71,7 @@ public class ForumController {
         return listdto;
     }
     @GetMapping("/quantity(ForumsByPsy)")
-    //@PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
     public List<QuantityForumByPsychologistDTO> quantityForumsByPsichologyst(){
         List<String[]> list = fS.CantidadDeForosQueTieneUnPsicologo ();
         List<QuantityForumByPsychologistDTO> listdto = new ArrayList<>();

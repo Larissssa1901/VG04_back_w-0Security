@@ -2,6 +2,7 @@ package pe.edu.upc.vpg04.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.vpg04.dtos.EventDTO;
 import pe.edu.upc.vpg04.dtos.QuantityEventbyPsichologistDTO;
@@ -18,7 +19,7 @@ public class EventController {
     @Autowired
     private IEventService eS;
     @GetMapping
-    //@PreAuthorize("hasAnyAuthority('PSICOLOGO', 'VETERANO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO', 'VETERANO')")
     public List<EventDTO> listar() {
         return eS.list().stream().map(x->{
             ModelMapper m = new ModelMapper();
@@ -27,7 +28,7 @@ public class EventController {
     }
 
     @PostMapping
-    // @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
     public void insertar(@RequestBody EventDTO edto) {
         ModelMapper m = new ModelMapper();
         Event e= m.map(edto, Event.class);
@@ -35,13 +36,13 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}")
-    //@PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
     public void eliminar(@PathVariable("id")Integer id){
         eS.delete(id);
     }
 
     @PutMapping
-    //@PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
     public void modificar(@RequestBody EventDTO edto) {
         ModelMapper m = new ModelMapper();
         Event e= m.map(edto, Event.class);

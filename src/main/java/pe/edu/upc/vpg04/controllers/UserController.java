@@ -2,6 +2,7 @@ package pe.edu.upc.vpg04.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.vpg04.dtos.UserDTO;
 import pe.edu.upc.vpg04.entities.Users;
@@ -15,15 +16,15 @@ import java.util.stream.Collectors;
 public class UserController {
     @Autowired
     private IUserService uS;
-    //@Autowired
-    //private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping
     public void registrar(@RequestBody UserDTO dto) {
         ModelMapper m = new ModelMapper();
         Users u = m.map(dto, Users.class);
-        //String encodedPassword = passwordEncoder.encode(u.getPassword());
-       // u.setPassword(encodedPassword);
+        String encodedPassword = passwordEncoder.encode(u.getPassword());
+       u.setPassword(encodedPassword);
         uS.insert(u);
     }
 

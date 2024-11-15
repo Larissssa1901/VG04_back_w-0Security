@@ -2,6 +2,7 @@ package pe.edu.upc.vpg04.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.vpg04.dtos.PostDTO;
 import pe.edu.upc.vpg04.dtos.QuantityPostsByVeteranDTO;
@@ -18,7 +19,7 @@ public class PostController {
     @Autowired
     private IPostService pS;
     @PostMapping("/registrar")
-    //@PreAuthorize("hasAnyAuthority('VETERANO')")
+    @PreAuthorize("hasAnyAuthority('VETERANO')")
     public void registrar(@RequestBody PostDTO postDTO) {
         ModelMapper m = new ModelMapper();
         Post post = m.map(postDTO, Post.class);
@@ -33,7 +34,7 @@ public class PostController {
     }
 
     @GetMapping("/listar")
-    //@PreAuthorize("hasAnyAuthority('VETERANO')")
+    @PreAuthorize("hasAnyAuthority('VETERANO')")
     public List<PostDTO> listar() {
         return pS.list().stream().map(y -> {
             ModelMapper m = new ModelMapper();

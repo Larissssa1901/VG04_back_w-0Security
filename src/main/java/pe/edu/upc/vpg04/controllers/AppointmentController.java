@@ -3,6 +3,7 @@ package pe.edu.upc.vpg04.controllers;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.vpg04.dtos.AppointmentDTO;
 import pe.edu.upc.vpg04.dtos.QuantityAppointmentsAttendedByPsychologistTimeDTO;
@@ -20,7 +21,7 @@ public class AppointmentController {
     @Autowired
     private IAppointmentService aS;
     @PostMapping("/registrar")
-    //@PreAuthorize("hasAnyAuthority('VETERANO','PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('VETERANO','PSICOLOGO')")
     public void registrar ( @RequestBody AppointmentDTO appointmentDTO) {
         ModelMapper m = new ModelMapper();
         Appointment appointment = m.map(appointmentDTO, Appointment.class);
@@ -33,7 +34,7 @@ public class AppointmentController {
         aS.update(appointment);
     }
     @GetMapping("/listar")
-   // @PreAuthorize("hasAnyAuthority('VETERANO')")
+   @PreAuthorize("hasAnyAuthority('VETERANO')")
     public List<AppointmentDTO> listar() {
         return aS.list().stream().map(y->{
             ModelMapper m = new ModelMapper();
