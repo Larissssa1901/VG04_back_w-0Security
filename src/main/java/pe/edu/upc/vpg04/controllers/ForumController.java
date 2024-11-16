@@ -19,7 +19,7 @@ public class ForumController {
     @Autowired
     private IForumService fS;
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO','ADMINISTRADOR')")
     public void registrar(@RequestBody ForumDTO forumDTO) {
         ModelMapper m = new ModelMapper();
         Forum forum = m.map(forumDTO, Forum.class);
@@ -27,7 +27,7 @@ public class ForumController {
     }
 
     @PutMapping
-    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO','ADMINISTRADOR')")
     public void modificar(@RequestBody ForumDTO forumDTO) {
         ModelMapper m = new ModelMapper();
         Forum forum = m.map(forumDTO, Forum.class);
@@ -35,7 +35,7 @@ public class ForumController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('PSICOLOGO','VETERANO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO','VETERANO','ADMINISTRADOR')")
     public List<ForumDTO> listar() {
         return fS.list().stream().map(y -> {
             ModelMapper m = new ModelMapper();
@@ -44,20 +44,20 @@ public class ForumController {
     }
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO','ADMINISTRADOR')")
     public void eliminar(@PathVariable("id") Integer id) {
         fS.delete(id);
     }
 
     @GetMapping("listar/{id}")
-    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO','ADMINISTRADOR')")
     public ForumDTO listarPorId(@PathVariable("id") Integer id) {
         ModelMapper m = new ModelMapper();
         ForumDTO forumDTO = m.map(fS.listId(id), ForumDTO.class);
         return forumDTO;
     }
     @GetMapping("/quantity(MostActiveForums)")
-    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO','ADMINISTRADOR')")
     public List<MostActiveForumInatMonthDTO> mostActiveForumsInTheLastMonths(){
         List<String[]> list = fS.ForosMasActivosEnElEltimoMes();
         List<MostActiveForumInatMonthDTO> listdto = new ArrayList<>();
@@ -71,7 +71,7 @@ public class ForumController {
         return listdto;
     }
     @GetMapping("/quantity(ForumsByPsy)")
-    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO','ADMINISTRADOR')")
     public List<QuantityForumByPsychologistDTO> quantityForumsByPsichologyst(){
         List<String[]> list = fS.CantidadDeForosQueTieneUnPsicologo ();
         List<QuantityForumByPsychologistDTO> listdto = new ArrayList<>();

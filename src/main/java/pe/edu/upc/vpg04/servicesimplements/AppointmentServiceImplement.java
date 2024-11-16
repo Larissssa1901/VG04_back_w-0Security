@@ -6,6 +6,7 @@ import pe.edu.upc.vpg04.entities.Appointment;
 import pe.edu.upc.vpg04.repositories.IAppointmentRepository;
 import pe.edu.upc.vpg04.servicesinterfaces.IAppointmentService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -45,5 +46,15 @@ public class AppointmentServiceImplement implements IAppointmentService {
     @Override
     public List<String[]> cantidadCitasAtendidasPorPsicologo() {
         return aR.quantityAppointmentsAttendedByUsers();
+    }
+
+    @Override
+    public List<String[]> citasporFecha(LocalDate date) {
+        return aR.appoitmentsbyDate(date);
+    }
+
+    @Override
+    public List<String[]> citasCanceladas() {
+        return aR.cancelledAppointments();
     }
 }

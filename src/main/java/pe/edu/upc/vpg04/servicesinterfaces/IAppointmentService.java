@@ -4,6 +4,7 @@ package pe.edu.upc.vpg04.servicesinterfaces;
 
 import pe.edu.upc.vpg04.entities.Appointment;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IAppointmentService {
@@ -14,4 +15,6 @@ public interface IAppointmentService {
     public Appointment listId (int id);
     public List<String[]> cantidadCitasAtendidasPorUsuarios();
     public List<String[]> cantidadCitasAtendidasPorPsicologo();
+    public List<String[]> citasporFecha(LocalDate date);
+    public List<String[]> citasCanceladas();
 }
