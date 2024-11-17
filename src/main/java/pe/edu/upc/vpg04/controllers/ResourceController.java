@@ -25,7 +25,7 @@ public class ResourceController {
     private IResourceService rS;
 
     @GetMapping
-   @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+   @PreAuthorize("hasAnyAuthority('PSICOLOGO','ADMINISTRADOR')")
     public List<Resource> listarecursos()
     {
         return rS.list().stream().map(x->{
@@ -35,7 +35,7 @@ public class ResourceController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO','ADMINISTRADOR')")
     public void insertar(@RequestBody ResourceDTO dto)
     {
         ModelMapper m=new ModelMapper();
@@ -51,7 +51,7 @@ public class ResourceController {
     }
 
     @DeleteMapping("/eliminar/{id}")
-    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO','ADMINISTRADOR')")
     public void eliminar(@PathVariable("id") Integer id) {
         rS.delete(id);
     }
@@ -64,7 +64,7 @@ public class ResourceController {
         return resourceDTO;
     }
     @GetMapping("/menosutilizado")
-    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO','ADMINISTRADOR')")
     public List<LessUsedResourceDTO> Recursomenosutilizado()
     {
         List<String[]> lista=rS.Rmenosutilizado();
@@ -79,7 +79,7 @@ public class ResourceController {
         return listdto;
     }
     @GetMapping("/maasutilizadoportiempo")
-    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO','ADMINISTRADOR')")
     public List<MostUsebetweendateDTO> recursomasutilizadoportiempo(@RequestParam LocalDate fechainicio, @RequestParam LocalDate fechafin) {
         List<String[]> lista = rS.tiporecursomasutilizad(fechainicio, fechafin);
         List<MostUsebetweendateDTO> listadto = new ArrayList<>();

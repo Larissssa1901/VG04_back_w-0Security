@@ -18,23 +18,23 @@ import java.util.stream.Collectors;
 public class PostController {
     @Autowired
     private IPostService pS;
-    @PostMapping("/registrar")
-    @PreAuthorize("hasAnyAuthority('VETERANO')")
+    @PostMapping
+    @PreAuthorize("hasAnyAuthority('VETERANO','ADMINISTRADOR')")
     public void registrar(@RequestBody PostDTO postDTO) {
         ModelMapper m = new ModelMapper();
         Post post = m.map(postDTO, Post.class);
         pS.insert(post);
     }
 
-    @PutMapping("/actualizar")
+    @PutMapping
     public void modificar(@RequestBody PostDTO postDTO) {
         ModelMapper m = new ModelMapper();
         Post post = m.map(postDTO, Post.class);
         pS.update(post);
     }
 
-    @GetMapping("/listar")
-    @PreAuthorize("hasAnyAuthority('VETERANO')")
+    @GetMapping
+    @PreAuthorize("hasAnyAuthority('VETERANO','ADMINISTRADOR')")
     public List<PostDTO> listar() {
         return pS.list().stream().map(y -> {
             ModelMapper m = new ModelMapper();
@@ -42,7 +42,7 @@ public class PostController {
         }).collect(Collectors.toList());
     }
 
-    @DeleteMapping("/eliminar/{id}")
+    @DeleteMapping("{id}")
     public void eliminar(@PathVariable("id") Integer id) {
         pS.delete(id);
     }

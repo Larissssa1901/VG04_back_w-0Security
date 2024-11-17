@@ -20,7 +20,7 @@ public class AppointmentController {
     @Autowired
     private IAppointmentService aS;
     @PostMapping("/registrar")
-    @PreAuthorize("hasAnyAuthority('VETERANO','PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('VETERANO','PSICOLOGO','ADMINISTRADOR')")
     public void registrar ( @RequestBody AppointmentDTO appointmentDTO) {
         ModelMapper m = new ModelMapper();
         Appointment appointment = m.map(appointmentDTO, Appointment.class);
@@ -33,7 +33,7 @@ public class AppointmentController {
         aS.update(appointment);
     }
     @GetMapping
-   @PreAuthorize("hasAnyAuthority('VETERANO')")
+   @PreAuthorize("hasAnyAuthority('VETERANO','ADMINISTRADOR')")
     public List<AppointmentDTO> listar() {
         return aS.list().stream().map(y->{
             ModelMapper m = new ModelMapper();

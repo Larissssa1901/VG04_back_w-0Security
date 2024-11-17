@@ -19,7 +19,7 @@ public class EventController {
     @Autowired
     private IEventService eS;
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('PSICOLOGO', 'VETERANO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO', 'VETERANO','ADMINISTRADOR')")
     public List<EventDTO> listar() {
         return eS.list().stream().map(x->{
             ModelMapper m = new ModelMapper();
@@ -28,7 +28,7 @@ public class EventController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO','ADMINISTRADOR')")
     public void insertar(@RequestBody EventDTO edto) {
         ModelMapper m = new ModelMapper();
         Event e= m.map(edto, Event.class);
@@ -36,13 +36,13 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO','ADMINISTRADOR')")
     public void eliminar(@PathVariable("id")Integer id){
         eS.delete(id);
     }
 
     @PutMapping
-    @PreAuthorize("hasAnyAuthority('PSICOLOGO')")
+    @PreAuthorize("hasAnyAuthority('PSICOLOGO','ADMINISTRADOR')")
     public void modificar(@RequestBody EventDTO edto) {
         ModelMapper m = new ModelMapper();
         Event e= m.map(edto, Event.class);

@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.vpg04.dtos.UserDTO;
+import pe.edu.upc.vpg04.entities.Role;
 import pe.edu.upc.vpg04.entities.Users;
+import pe.edu.upc.vpg04.servicesinterfaces.IRoleService;
 import pe.edu.upc.vpg04.servicesinterfaces.IUserService;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 public class UserController {
     @Autowired
     private IUserService uS;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -26,6 +29,7 @@ public class UserController {
         String encodedPassword = passwordEncoder.encode(u.getPassword());
        u.setPassword(encodedPassword);
         uS.insert(u);
+
     }
 
     @PutMapping

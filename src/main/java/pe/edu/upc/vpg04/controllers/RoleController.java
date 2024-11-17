@@ -23,6 +23,7 @@ public class RoleController {
         rS.insert(r);
     }
 
+
     @PutMapping
     public void modificar(@RequestBody RoleDTO dto) {
         ModelMapper m = new ModelMapper();
